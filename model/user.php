@@ -1,31 +1,20 @@
 <?php
 
-function addUser($pdo, $data){
+function addClient($pdo, $data){
     $firstname=$data['firstname'];
     $lastname=$data['lastname'];
     $email=$data['email'];
+    $mdp=$data['password'];
+    $phone=$data['phone'];
 
         $sql = "
-        insert into user (first_name, last_name, email)
-        values(:firstname, :lastname, :email)
+        insert into client (first_name, last_name, email, password_client, phone)
+        values(:firstname, :lastname, :email, :mdp, :phone);
     ";
     $stmt= $pdo->prepare($sql);   
     
     try{
         return $stmt->execute($data);
-        
-        /*ou (
-            [
-                "firstname"=>$firstname
-            ],
-            [
-                "lastname"=>$lastname
-            ],
-            [
-                "email"=>$email
-            ],
-        );
-        */
     }catch(Exception $e){
         $pdo->rollBack();
         throw $e;
@@ -36,7 +25,7 @@ function addUser($pdo, $data){
 function getAllUsers($pdo){
         $sql="   
         SELECT *
-        FROM user
+        FROM client
     ";
     $stmt = $pdo->prepare($sql);
     try{
@@ -51,7 +40,7 @@ function getAllUsers($pdo){
 function getUser($pdo, $id){
         $sql="   
         SELECT *
-        FROM user
+        FROM client
         WHERE id= :id
     ";
     $stmt = $pdo->prepare($sql);
@@ -64,15 +53,33 @@ function getUser($pdo, $id){
     }
 }
 
-function deleteUser(){
+function deleteUser($pdo, $data){
+    
+    $firstname=$data['firstname'];
+    $lastname=$data['lastname'];
+    $email=$data['email'];
+    $mdp=$data['password_client'];
+    $phone=$data['phone'];
 
+    $sql = "
+    DELETE FROM `client`
+    WHERE first_name= :firstname, last_name= :lastname, email= :email, password_client= :mdp, phone= :phone;
+ ";
+ $stmt= $pdo->prepare($sql);   
+ 
+ try{
+     return $stmt->execute($data);
+ }catch(Exception $e){
+     $pdo->rollBack();
+     throw $e;
+ }
 }
 
 function updateUser($pdo, $data, $id){
 
     $sql = "
-       UPDATE user
-       SET firstname=:firstname, lastname=:lastname, email=:email)
+       UPDATE client
+       SET (firstname=:firstname, lastname=:lastname, email=:email)
        WHERE id= :id;
     ";
     $stmt= $pdo->prepare($sql);   
@@ -84,4 +91,31 @@ function updateUser($pdo, $data, $id){
         throw $e;
     }
 
+}
+
+function verifyUser($pdo, $data){
+    $email=$data['email'];
+    $mdp=$data['password'];
+
+        $sql = "
+        SELECT *
+        FROM `client`
+        where email= :email ;
+    ";
+    $stmt = $pdo->prepare($sql);
+    try{
+    $stmt->execute($data);
+    $result=$stmt->fetch();
+    password_verify($mdp, $result['password_client']);
+    return true;
+    session_start();
+    $_SESSION['firstName'] = $result['first_name'];
+    $_SESSION['lastName'] = $result['last_name'];
+    $_SESSION['email'] = $result['email'];
+    echo 'Bienvenue '.$_SESSION['firstName']." ".$_SESSION['lastName'];
+    // diriger vers une autre page https://www.php.net/manual/fr/function.header.php
+    }catch(Exception $e){
+        $pdo->rollBack();
+        throw $e;
+    } 
 }

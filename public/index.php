@@ -17,11 +17,13 @@ switch ($slug) {
     case '/signin':
         include '../controller/signin_controller.php';
         break;
+    case '/login':
+        include '../controller/login_controller.php';
+        break;
     default:
         include "../controller/404_controller.php";
         break;
 }
-
 include '../layout/footer.php';
 
 ?>

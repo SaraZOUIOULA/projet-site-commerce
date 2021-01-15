@@ -1,15 +1,21 @@
-<h1>Formulaire d'inscrption</h1>
+<h1>Formulaire d'inscription</h1>
 
 <form action="/signin" method="post" >
 
-    <label for="firstname">First Name:</label>
+    <label for="firstname">Prénom:</label>
     <input id="firstname" name="firstname" type="text">
-
-    <label for="lastname">Last Name:</label>
+    <br>
+    <label for="lastname">Nom de famille:</label>
     <input id="lastname" name="lastname" type="text">
-
-    <label for="email">Email:</label>
+    <br>
+    <label for="email">Adress mail:</label>
     <input id="email" name="email" type="text">
-
-    <button type="submit">Submit</button>
+    <br>
+    <label for="password">Mot de passe :</label>
+    <input id="password" name="password" type="password">
+    <br>
+    <label for="phone">Numéro de téléphone :</label>
+    <input id="phone" name="phone" type="tel" pattern="[0-9]{10}" required>
+    <br>
+    <button type="submit" name="submit">Submit</button>
 </form>
