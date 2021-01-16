@@ -7,7 +7,7 @@
 <body>
     <h1>Formulaire de connexion</h1>
 
-    <form action="/signup" method="post" >
+    <form action="/login" method="post" >
         <fieldset>
         <legend>S'identifier:</legend>
         <label for="email">Adresse mail:</label>
@@ -16,7 +16,7 @@
         <label for="password">Mot de passe:</label>
         <input id="password" name="password" type="password">
         <br><br>
-        <button type="submit" name="connexion" valeur="connexion">Submit</button>
+        <button type="submit" name="connexion" valeur="connexion">Connexion</button>
         </fieldset>
     </form>
 </body>

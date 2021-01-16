@@ -1,43 +1,58 @@
 <?php
 
 function addClient($pdo, $data){
-    $firstname=$data['firstname'];
-    $lastname=$data['lastname'];
-    $email=$data['email'];
-    $mdp=$data['password'];
-    $phone=$data['phone'];
+    
+        $sql = "
+        INSERT INTO client (first_name, last_name, email, password_client, phone)
+        VALUES(:firstname, :lastname, :email, :mdp, :phone);
+    ";
+    $mdp_hash=password_hash($data['password'], PASSWORD_DEFAULT);
+    $stmt= $pdo->prepare($sql);   
+    $stmt-> bindValue(':firstname', $data['firstname']);
+    $stmt-> bindValue(':lastname', $data['lastname']);
+    $stmt-> bindValue(':email', $data['email']);
+    $stmt-> bindValue(':mdp', $mdp_hash);
+    $stmt-> bindValue(':phone', $data['phone']);
+    try{
+        echo"Inscription confirmée";
+        header('Location: http://localhost:81/login'); 
+        exit(); 
+        return $stmt->execute();
+    }catch(Exception $e){
+        $pdo->rollBack();
+        throw $e;
+    } 
+}
+
+
+function verifyClient($pdo, $data){
+    $mdp=password_hash($data['password'], PASSWORD_DEFAULT);
 
         $sql = "
-        insert into client (first_name, last_name, email, password_client, phone)
-        values(:firstname, :lastname, :email, :mdp, :phone);
-    ";
-    $stmt= $pdo->prepare($sql);   
-    
-    try{
-        return $stmt->execute($data);
-    }catch(Exception $e){
-        $pdo->rollBack();
-        throw $e;
-    }
-   
-}
-
-function getAllUsers($pdo){
-        $sql="   
         SELECT *
-        FROM client
+        FROM `client`
+        where email= :email ;
     ";
     $stmt = $pdo->prepare($sql);
+    $stmt-> bindValue(':email', $data['email']);
     try{
     $stmt->execute();
-    return $stmt->fetchAll();
+    $result=$stmt->fetch();
+    password_verify($mdp, $result['password_client']);
+    //return true;
+    session_start();
+    $_SESSION['firstName'] = $result['first_name'];
+    $_SESSION['lastName'] = $result['last_name'];
+    $_SESSION['email'] = $result['email'];
+    header ('Location: http://localhost:81/');
+    exit();
     }catch(Exception $e){
         $pdo->rollBack();
         throw $e;
-    }
+    } 
 }
 
-function getUser($pdo, $id){
+function getClient($pdo, $_SESSION){
         $sql="   
         SELECT *
         FROM client
@@ -51,71 +66,4 @@ function getUser($pdo, $id){
         $pdo->rollBack();
         throw $e;
     }
-}
-
-function deleteUser($pdo, $data){
-    
-    $firstname=$data['firstname'];
-    $lastname=$data['lastname'];
-    $email=$data['email'];
-    $mdp=$data['password_client'];
-    $phone=$data['phone'];
-
-    $sql = "
-    DELETE FROM `client`
-    WHERE first_name= :firstname, last_name= :lastname, email= :email, password_client= :mdp, phone= :phone;
- ";
- $stmt= $pdo->prepare($sql);   
- 
- try{
-     return $stmt->execute($data);
- }catch(Exception $e){
-     $pdo->rollBack();
-     throw $e;
- }
-}
-
-function updateUser($pdo, $data, $id){
-
-    $sql = "
-       UPDATE client
-       SET (firstname=:firstname, lastname=:lastname, email=:email)
-       WHERE id= :id;
-    ";
-    $stmt= $pdo->prepare($sql);   
-    
-    try{
-        return $stmt->execute(["id"=> $id]);
-    }catch(Exception $e){
-        $pdo->rollBack();
-        throw $e;
-    }
-
-}
-
-function verifyUser($pdo, $data){
-    $email=$data['email'];
-    $mdp=$data['password'];
-
-        $sql = "
-        SELECT *
-        FROM `client`
-        where email= :email ;
-    ";
-    $stmt = $pdo->prepare($sql);
-    try{
-    $stmt->execute($data);
-    $result=$stmt->fetch();
-    password_verify($mdp, $result['password_client']);
-    return true;
-    session_start();
-    $_SESSION['firstName'] = $result['first_name'];
-    $_SESSION['lastName'] = $result['last_name'];
-    $_SESSION['email'] = $result['email'];
-    echo 'Bienvenue '.$_SESSION['firstName']." ".$_SESSION['lastName'];
-    // diriger vers une autre page https://www.php.net/manual/fr/function.header.php
-    }catch(Exception $e){
-        $pdo->rollBack();
-        throw $e;
-    } 
 }

@@ -11,7 +11,6 @@ $slug =  explode('?', $_SERVER['REQUEST_URI'])[0];
 switch ($slug) {
     // url
     case '/':
-        // php file (controller)
         include '../controller/home_controller.php';
         break;
     case '/signin':

@@ -2,6 +2,8 @@
 include '../model/user.php';
 
 if(isset($_POST['submit'])) {
-	addClient($pdo, $_POST);
+	if(!isset($_POST['email'])){
+		addClient($pdo, $_POST);
+	}
 }
 include '../view/signin_view.php';

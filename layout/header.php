@@ -9,6 +9,11 @@
 </head>
 
 <body>
+<?php 
+    session_start();
+    getClient();
+    echo 'Bienvenue '.$_SESSION['firstName']." ".$_SESSION['lastName'];
+?>
 <nav>
     <ul>
         <li><a href="/">Home</a></li>
