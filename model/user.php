@@ -51,19 +51,3 @@ function verifyClient($pdo, $data){
         throw $e;
     } 
 }
-
-function getClient($pdo, $_SESSION){
-        $sql="   
-        SELECT *
-        FROM client
-        WHERE id= :id
-    ";
-    $stmt = $pdo->prepare($sql);
-    try{
-    $stmt->execute(["id"=> $id]);
-    return $stmt->fetch();
-    }catch(Exception $e){
-        $pdo->rollBack();
-        throw $e;
-    }
-}

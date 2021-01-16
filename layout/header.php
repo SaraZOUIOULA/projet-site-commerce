@@ -9,15 +9,18 @@
 </head>
 
 <body>
-<?php 
-    session_start();
-    getClient();
-    echo 'Bienvenue '.$_SESSION['firstName']." ".$_SESSION['lastName'];
-?>
-<nav>
-    <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/signin">Sign In</a></li>
-        <li><a href="/login">Log in</a></li>
-    </ul>
-</nav>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/signin">Sign In</a></li>
+            <li><a href="/login">Log in</a></li>
+        </ul>
+    </nav>
+    <?php 
+        session_start();
+       
+        echo $_SESSION['firstName']." ".$_SESSION['lastName'];
+      
+    ?>
+</body>
+</html>
