@@ -18,9 +18,9 @@
     </nav>
     <?php 
         session_start();
-       
+        if($_SESSION != NULL){
         echo $_SESSION['firstName']." ".$_SESSION['lastName'];
-      
+        }
     ?>
 </body>
 </html>

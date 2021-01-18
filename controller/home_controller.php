@@ -5,7 +5,7 @@ include '../view/home_view.php';
 
 
 $categories=getAllCategory($pdo);
-foreach($categories as $category){
+foreach($categories as $category){ 
     echo "<img src='images/";
     switch($category['id_category']){
         case 1:
