@@ -25,7 +25,7 @@ foreach($categories as $category){
             break;
     }
     echo"<br>";
-    echo "<a href='../controller/product_controller.php'>".$category['name_category']."</a></div> <br><br>";
+    echo "<a href='/product?category=".$category['id_category']."'>".$category['name_category']."</a></div> <br><br>";
 }
 
 

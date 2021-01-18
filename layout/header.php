@@ -9,18 +9,22 @@
 </head>
 
 <body>
-    <nav>
+    <nav class="menu">
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/signin">Sign In</a></li>
             <li><a href="/login">Log in</a></li>
+                <?php 
+                    session_start();
+                    if(isset($_SESSION['id'])){
+                    echo "<li><a href='/login?status=notLog'>Déconnexion</a></li>";
+                    echo "<li><a href='/login?status=signout'>Désinscription</a></li>";
+                    echo "<li><a href='/order'>Panier</a></li>";
+                    }
+                ?>
+            
         </ul>
     </nav>
-    <?php 
-        session_start();
-        if($_SESSION != NULL){
-        echo $_SESSION['firstName']." ".$_SESSION['lastName'];
-        }
-    ?>
+    
 </body>
 </html>

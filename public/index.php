@@ -19,6 +19,12 @@ switch ($slug) {
     case '/login':
         include '../controller/login_controller.php';
         break;
+    case '/product':
+        include '../controller/product_controller.php';
+        break;
+    case '/order':
+        include '../controller/order_controller.php';
+        break;
     default:
         include "../controller/404_controller.php";
         break;

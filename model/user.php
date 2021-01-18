@@ -14,10 +14,8 @@ function addClient($pdo, $data){
     $stmt-> bindValue(':mdp', $mdp_hash);
     $stmt-> bindValue(':phone', $data['phone']);
     try{
-        echo"Inscription confirmée";
-        header('Location: http://localhost:81/login'); 
-        exit(); 
-        return $stmt->execute();
+        $result=$stmt->execute(); 
+        return $result;
     }catch(Exception $e){
         $pdo->rollBack();
         throw $e;
@@ -26,8 +24,6 @@ function addClient($pdo, $data){
 
 
 function verifyClient($pdo, $data){
-    $mdp=password_hash($data['password'], PASSWORD_DEFAULT);
-
         $sql = "
         SELECT *
         FROM `client`
@@ -38,16 +34,51 @@ function verifyClient($pdo, $data){
     try{
     $stmt->execute();
     $result=$stmt->fetch();
-    password_verify($mdp, $result['password_client']);
-    //return true;
-    session_start();
-    $_SESSION['firstName'] = $result['first_name'];
-    $_SESSION['lastName'] = $result['last_name'];
-    $_SESSION['email'] = $result['email'];
-    header ('Location: http://localhost:81/');
-    exit();
+    $result['password_client'];
+    if(password_verify($data['password'], $result['password_client'])){
+        session_start();
+        $_SESSION['id']= $result['id'];
+        $_SESSION['firstName'] = $result['first_name'];
+        $_SESSION['lastName'] = $result['last_name'];
+        header ('Location: http://localhost:81/');
+        exit();
+    }else {
+        echo 'mdp erroné';
+    }
     }catch(Exception $e){
         $pdo->rollBack();
         throw $e;
     } 
 }
+
+function getClient($pdo, $data){
+    $sql="
+        SELECT * FROM client
+        WHERE id= :id;
+    ";
+    $stmt = $pdo->prepare($sql);
+    try{
+        $stmt->execute(['id'=>$data['id']]);
+        $products= $stmt->fetch();
+        return $products;
+    }catch(Exception $e){
+        $pdo->rollBack();
+        throw $e;
+    }
+}
+
+function deleteClient($pdo, $data){
+    $sql="
+        DELETE FROM `client` 
+        WHERE id= :id; 
+    ";
+    $stmt = $pdo->prepare($sql);
+    try{
+        $stmt->execute(['id'=>$data['id']]);
+    }catch(Exception $e){
+        $pdo->rollBack();
+        throw $e;
+    }
+}
+
+?>

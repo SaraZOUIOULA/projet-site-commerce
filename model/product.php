@@ -1,34 +1,33 @@
 <?php
     
 function getAllCategory($pdo){
-    $sql="   
-    SELECT *
-    FROM category
-";
-$stmt = $pdo->prepare($sql);
-try{
-$stmt->execute();
-$categories= $stmt->fetchAll();
-return $categories;
-}catch(Exception $e){
-    $pdo->rollBack();
-    throw $e;
-}
+        $sql="   
+        SELECT *
+        FROM category
+    ";
+    $stmt = $pdo->prepare($sql);
+    try{
+        $stmt->execute();
+        $categories= $stmt->fetchAll();
+        return $categories;
+    }catch(Exception $e){
+        $pdo->rollBack();
+        throw $e;
+    }
 }
 
 
 function getAllProducts($pdo, $data){
-        $id_cat=$data['id_category'];
         $sql="   
             SELECT *
             FROM item
-            WHERE id_category= :$id_cat
+            WHERE id_category= :id_cat
     ";
     $stmt = $pdo->prepare($sql);
     try{
-    $stmt->execute();
-    $products= $stmt->fetchAll();
-    return $products;
+        $stmt->execute(['id_cat'=> $data]);
+        $products= $stmt->fetchAll();
+        return $products;
     }catch(Exception $e){
         $pdo->rollBack();
         throw $e;
