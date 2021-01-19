@@ -15,12 +15,18 @@ if(isset($_GET['status'])){
 	}
 }
 
+if(isset($_GET['profil'])){
+	if($_GET['profil'] == 'view'){
+		$profile=getClient($pdo, $_SESSION);
+		echo "Name:".$profile['first_name']." ".$profile['last_name']."<br>";
+		echo "Mail:".$profile['email']."<br>";
+		echo "Phone:".$profile['phone'];"<br>";
+	}
+}
+
 if(isset($_POST['connexion']) && isset($_POST['email'])) {
 	verifyClient($pdo, $_POST);
 }
 
-if(isset($_SESSION['id'])){
-	getClient($pdo, $_SESSION);
-	echo $_SESSION['firstName']." ".$_SESSION['lastName'];
-}
+
 include '../view/login_view.php';

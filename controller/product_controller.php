@@ -8,7 +8,7 @@ if(isset($_GET['category'])){
     echo "<img src='".$product['image_item']."'>";
     echo "<p>".$product['name_item']."</p>";
     echo "<p>".$product['description_item']."</p>";
-    echo "<form methode='POST'>
+    echo "<form action='/order' methode='POST'>
             <input type='number' nom='quantity' min=1>
             <input type='hidden' nom= 'id_product' value=".$product['id_item'].">
             <button type='submit' name='panier'>Ajouter au panier</button>

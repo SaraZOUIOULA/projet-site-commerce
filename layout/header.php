@@ -17,6 +17,7 @@
                 <?php 
                     session_start();
                     if(isset($_SESSION['id'])){
+                    echo "<li><a href='/login?profil=view'>Mon profile</a></li>";
                     echo "<li><a href='/login?status=notLog'>Déconnexion</a></li>";
                     echo "<li><a href='/login?status=signout'>Désinscription</a></li>";
                     echo "<li><a href='/order'>Panier</a></li>";
@@ -25,6 +26,7 @@
             
         </ul>
     </nav>
+    
     
 </body>
 </html>

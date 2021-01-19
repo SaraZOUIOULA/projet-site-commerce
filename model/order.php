@@ -1,16 +1,13 @@
 <?php
 
-function addOrder($pdo, $data, $info){
+function addOrder($pdo, $data){
     $sql="
         INSERT INTO `order`(id_client, paid)
-        VALUES :id , :paid;
+        VALUES (:id, 0);
     ";
     $stmt= $pdo->prepare($sql);   
     try{
-        $stmt->execute(['id_client'=>$data['id_client'], 'paid'=>$info['paid']]);
-        $result=$stmt->fetch(); 
-        return $result;        
-        
+        return $stmt->execute(['id'=>$data['id']]);    
     }catch(Exception $e){
         $pdo->rollBack();
         throw $e;
@@ -20,6 +17,25 @@ function addOrder($pdo, $data, $info){
 function getOrder($pdo, $data){
     $sql="
         SELECT * FROM `order`
+        WHERE id_client= :id AND paid= 0;
+    ";
+    $stmt= $pdo->prepare($sql);   
+    try{
+        $stmt->execute(['id'=>$data['id']]);
+        $result=$stmt->fetch(); 
+        return $result;        
+        
+    }catch(Exception $e){
+        $pdo->rollBack();
+        throw $e;
+    }   
+
+}
+
+function updateOrder($pdo, $data){
+    $sql="
+        UPDATE `order`
+        SET paid= 1
         WHERE id_order= :id_order;
     ";
     $stmt= $pdo->prepare($sql);   
@@ -34,14 +50,16 @@ function getOrder($pdo, $data){
     }   
 
 }
-function addContentOrder($pdo, $data){
+
+function addContentOrder($pdo, $data, $info){
     $sql="
         INSERT INTO `content_order` ( id_item, quantity)
-        VALUES  :id_product, :quantity;
+        VALUES  (:id_item, :quantity);
+        WHERE id_order= :id_order;
     ";
     $stmt= $pdo->prepare($sql);   
     try{
-        $stmt->execute(['id_item'=>$data['id_item'], 'quantity'=>$data['quantity']]);
+        $stmt->execute(['id_item'=>$data['id_item'], 'quantity'=>$data['quantity'],'id_order'=>$info['id_order']]);
         $result=$stmt->fetch(); 
         return $result;        
         
