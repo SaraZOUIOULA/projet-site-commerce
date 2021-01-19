@@ -70,4 +70,23 @@ function addContentOrder($pdo, $data, $info){
 }
 
 
+function getContentOrder($pdo, $data){
+    $sql="
+        SELECT * 
+        FROM `content_order`, `item`
+        WHERE id_order= :id_order  AND content_order.id_item=item.id_item
+
+    ";
+    $stmt= $pdo->prepare($sql);   
+    try{
+        $stmt->execute(['id_order'=>$data['id_order']]);
+        $result=$stmt->fetchAll(); 
+        return $result;        
+        
+    }catch(Exception $e){
+        $pdo->rollBack();
+        throw $e;
+    } 
+}
+
 ?>

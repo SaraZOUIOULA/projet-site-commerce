@@ -13,13 +13,29 @@ if(isset($_SESSION['id'])){
         if(!isset($_GET['paid'])){
             addContentOrder($pdo,$_POST, $commande); 
         }
-        echo "id client: ".$commande['id_client']."<br>";
-        echo "id commande: ".$commande['id_order']."<br>";
-        echo "payé: ".$commande['paid']."<br></fieldset>";
+        echo "Commande N° ".$commande['id_order']."<br>";
+        if($commande['paid'] == 0){ 
+            echo"Payé: non <br>";
+        }else{
+            echo "Payé: oui <br>";
+        }
+        $total=0;
+        $content=getContentOrder($pdo,$commande);
+        foreach($content as $item){
+            echo "<img src='".$item['image_item']."'><br>";
+            echo $item['name_item']."<br>";
+            echo "Quantité: ".$item['quantity']."<br>";
+            echo "Prix: ".$item['price']."€<br>";
+            $totalProduit=$item['quantity']*$item['price'];
+            echo "Prix total pour cet article: ". $item['quantity']*$item['price']."€<br>";
+            echo $item['description_item'];
+            echo "<br><br>";
+            $total=$total+$totalProduit;
+        }
+        echo "Votre facture est d'un montant de : ".$total."€<br>";
+        echo"</fieldset>";
         echo "<button type='button' name='submit'><a href='/order?paid=true'>PAYER</a></button>"; 
     }
-    
-    var_dump($_GET);
     if(isset($_GET['paid'])){
         updateOrder($pdo, $commande);
         addOrder($pdo, $_SESSION);
