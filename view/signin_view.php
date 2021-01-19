@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
 </head>
 <body>
-    
-    <h1>Formulaire d'inscription</h1>
+    <fieldset>
+    <legend>Formulaire d'inscription</legend>
+    <br>
 
-    <form action="/signin" method="POST" >
-
+    <form action="/signin" method="POST">
+        
         <label for="firstname">Prénom:</label>
         <input id="firstname" name="firstname" type="text">
         <br>
@@ -25,8 +25,10 @@
         <br>
         <label for="phone">Numéro de téléphone :</label>
         <input id="phone" name="phone" type="tel" pattern="[0-9]{10}" required>
-        <br>
+        <br><br>
         <button type="submit" name="submit">Valider</button>
     </form>
+
+    </fieldset>
 </body>
 </html>

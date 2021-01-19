@@ -11,9 +11,9 @@
 <body>
     <nav class="menu">
         <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/signin">Sign In</a></li>
-            <li><a href="/login">Log in</a></li>
+            <li><a href="/">accueil</a></li>
+            <li><a href="/signin">inscription</a></li>
+            <li><a href="/login">connexion</a></li>
                 <?php 
                     session_start();
                     if(isset($_SESSION['id'])){

@@ -6,6 +6,7 @@
 
 </head>
 <body>
-    <p>Copyright</p>
+    <p class="footer">Copyright</p>
+    
 </body>
 </html>
