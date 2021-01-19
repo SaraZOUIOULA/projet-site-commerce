@@ -40,7 +40,7 @@ function verifyClient($pdo, $data){
         $_SESSION['id']= $result['id'];
         $_SESSION['firstName'] = $result['first_name'];
         $_SESSION['lastName'] = $result['last_name'];
-        header ('Location: http://localhost:81/');
+        header ('Location: /');
         exit();
     }else {
         echo 'mdp erroné';

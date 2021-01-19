@@ -10,15 +10,17 @@ if(isset($_SESSION['id'])){
         addOrder($pdo, $_SESSION);
         echo"Recharger la page pour commencez vos achat !";
     }else{
-        addContentOrder($pdo,$_POST, $commande); 
+        if(!isset($_GET['paid'])){
+            addContentOrder($pdo,$_POST, $commande); 
+        }
         echo "id client: ".$commande['id_client']."<br>";
         echo "id commande: ".$commande['id_order']."<br>";
         echo "payé: ".$commande['paid']."<br></fieldset>";
-        echo "<form  method='POST'> <button type='submit' name='submit'>PAYER</button></form>"; 
+        echo "<button type='button' name='submit'><a href='/order?paid=true'>PAYER</a></button>"; 
     }
     
-
-    if(isset($_POST['submit'])){
+    var_dump($_GET);
+    if(isset($_GET['paid'])){
         updateOrder($pdo, $commande);
         addOrder($pdo, $_SESSION);
     }

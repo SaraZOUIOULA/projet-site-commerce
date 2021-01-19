@@ -53,13 +53,13 @@ function updateOrder($pdo, $data){
 
 function addContentOrder($pdo, $data, $info){
     $sql="
-        INSERT INTO `content_order` ( id_item, quantity)
-        VALUES  (:id_item, :quantity);
-        WHERE id_order= :id_order;
+        INSERT INTO `content_order` (id_order, id_item, quantity)
+        VALUES  (:id_order, :id_item, :quantity)
+
     ";
     $stmt= $pdo->prepare($sql);   
     try{
-        $stmt->execute(['id_item'=>$data['id_item'], 'quantity'=>$data['quantity'],'id_order'=>$info['id_order']]);
+        $stmt->execute(['id_order'=>$info['id_order'],'id_item'=>$data['id_product'], 'quantity'=>$data['quantity']]);
         $result=$stmt->fetch(); 
         return $result;        
         
